@@ -1,6 +1,6 @@
 const labels = [];
 
-const data = {
+const dataTemperature = {
     labels: [],
     datasets: [
         {
@@ -13,12 +13,24 @@ const data = {
     ]
 };
 
+const dataPressure = {
+    labels: [],
+    datasets: [
+        {
+            label: "hPa",
+            data: [],
+            borderColor: 'rgb(0,0,102)',
+            backgroundColor: 'rgb(143,204,255)',
 
-const getConfig=(id)=>{
+        },
+    ]
+};
+
+const getConfigTemperature = (id) => {
     return {
         type: 'line',
-        data: data,
-        id:id,
+        data: dataTemperature,
+        id: id,
         options: {
             responsive: true,
             plugins: {
@@ -30,49 +42,90 @@ const getConfig=(id)=>{
                 }
             }
         }
-}
-}
-let id=0;
-const createChart=(htmlelement)=>{
-    console.log("init char",htmlelement)
-    // config=createConfig(...)
-    const temp={
-        key: htmlelement.id,
-        chart:new Chart(htmlelement,getConfig(id))
     }
+}
+
+const getConfigPressure = (id) => {
+    return {
+        type: 'line',
+        data: dataPressure,
+        id: id,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                }
+            }
+        }
+    }
+}
+
+
+
+let id = 0;
+const createChart = (htmlelement) => {
+    console.log("init char", htmlelement)
+    // config=createConfig(...)
+
+    let temp;
+
+    switch (htmlelement.id) {
+        case "temperatureChart":
+            temp = {
+                key: htmlelement.id,
+                chart: new Chart(htmlelement, getConfigTemperature(id))
+            }
+            break;
+        case "pressureChart":
+            temp = {
+                key: htmlelement.id,
+                chart: new Chart(htmlelement, getConfigPressure(id))
+            }
+            break;
+    }
+
+
     console.log(temp)
     charts.push(temp)
     id++;
 }
-const charts=[];
+const charts = [];
 
-const getChart=(key)=>{
+const getChart = (key) => {
     console.log(charts);
     return charts.find(x => x.key == key).chart;
 }
 
-const getData=async()=>{
-    const response = await fetch("http://172.20.10.6:5001/weatherdata"); //API einfügen
-    const data= await response.json();
+const getData = async () => {
+    const response = await fetch("http://192.168.0.132:5001/weatherdata"); //API einfügen
+    const data = await response.json();
     console.log(data);
- return data;
+    return data;
 }
 
 // Labels einfügen, Daten einfügen
 
-const setDataToChart=(data)=>{
-    let chartTemp=getChart("temperatureChart");
-    let chartPress=getChart("pressureChart");
-    console.log(chartTemp,chartPress)
-    for (const weatherdata of data) {
-        chartTemp.data.labels.push(weatherdata.datetime);
+const setDataToChart = (data) => {
+    let chartTemp = getChart("temperatureChart");
+    let chartPress = getChart("pressureChart");
+    console.log(chartTemp, chartPress)
+
+
+    for (let i = data.length -1 ; i >= 0; i--) {
+        let weatherdata = data[i];
+
+        chartTemp.data.labels.push(parseDate(weatherdata.datetime));
         chartTemp.data.datasets[0].data.push(weatherdata.temperature);
         chartTemp.update();
-        
-        chartPress.data.labels.push(weatherdata.datetime);
+
+        chartPress.data.labels.push(parseDate(weatherdata.datetime));
         chartPress.data.datasets[0].data.push(weatherdata.pressure);
         chartPress.update();
-}
+    }
 /*
 [{
     temperature: number
@@ -81,3 +134,25 @@ const setDataToChart=(data)=>{
     datetime: date
 }]
 */}
+
+function parseDate(dateToParse) {
+    var date = new Date(dateToParse);
+
+    const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    let month = months[date.getMonth()];
+
+    return date.getDate() + "." + month + ". " + date.getHours() + ":" + getMinute(date.getMinutes()) + " Uhr";
+}
+
+function setAltitude(data) {
+    var altitudeLabel = document.getElementById("altitude-label");
+
+    altitudeLabel.innerHTML = data[data.length - 1].altitude + " Meter";
+}
+
+function getMinute(number) {
+    if (number < 10) {
+        return '0' + number;
+    }
+    return number;
+}

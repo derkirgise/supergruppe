@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             text-align: center;
-            width: 100%;
+            /* width: 100%; */
             font-family: "Trebuchet MS";
             background-color: lightsteelblue;
         }
@@ -73,7 +73,7 @@
             </div>
             <div id="altitude">
                 <h2>Höhe</h2>
-                <h3>x Meter</h3>
+                <h3 id="altitude-label">x Meter</h3>
             </div>
         </div>
         <div class="footer">
@@ -94,7 +94,8 @@
     // createChart(element);
     
    getData().then(data=>{
-        setDataToChart(data)
+        setDataToChart(data);
+        setAltitude(data);
         // set data to charts
    });
 
