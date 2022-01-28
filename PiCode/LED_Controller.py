@@ -94,4 +94,3 @@ def show_message(device, msg, y_offset=0, x_offset=0, fill=None, font=None,
             virtual.set_position((i, 0))
             i += 1
             
-

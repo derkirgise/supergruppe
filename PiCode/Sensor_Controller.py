@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-
-import time
 import adafruit_bmp280
 import board
 
@@ -32,5 +30,4 @@ def getTemp():
         return "Mild"
     else:
         return "Warm"
-    
-print(readSensor())
+        
