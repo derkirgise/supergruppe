@@ -66,8 +66,10 @@ buttonThread.start()
 #Define database-function
 def logData():
     while True:
+        
         data=readSensor()
         logWeatherData(data)
+        time.sleep(60)
 
 #Start database-thread
 DBThread = threading.Thread(target=logData)
