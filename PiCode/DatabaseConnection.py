@@ -30,3 +30,21 @@ def getWeatherData():
 
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB Platform: {e}")
+
+def logWeatherData():
+     try:
+        conn = mariadb.connect(
+            user="pi",
+            password="supergruppe",
+            host="127.0.0.1",
+            port=3306,
+            database="WeatherLog"
+        )
+        cursorDb = conn.cursor()
+
+        sqlscript="INSERT INTO Daten (temperature, pressure, altitude, datetime) values ({0}, {1}, {2}, NOW())".format(temperature, pressure, altitude)
+        cursorDb.execute(sqlscript)
+        conn.commit()
+
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
