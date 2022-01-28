@@ -8,7 +8,7 @@ const dataTemperature = {
             data: [],
             borderColor: 'rgb(0,0,102)',
             backgroundColor: 'rgb(143,204,255)',
-
+        
         },
     ]
 };
@@ -40,6 +40,12 @@ const getConfigTemperature = (id) => {
                 title: {
                     display: true,
                 }
+            },
+            scales: {
+                y: {
+                    suggestedMin: 15,
+                    suggestedMax: 28
+                }
             }
         }
     }
@@ -58,6 +64,12 @@ const getConfigPressure = (id) => {
                 },
                 title: {
                     display: true,
+                }
+            },
+            scales: {
+                y: {
+                    suggestedMin: 920,
+                    suggestedMax: 1050
                 }
             }
         }
@@ -101,10 +113,14 @@ const getChart = (key) => {
 }
 
 const getData = async () => {
-    const response = await fetch("http://192.168.0.132:5001/weatherdata"); //API einfügen
+    const response = await fetch("http://192.168.0.132:5001/weatherdata");
     const data = await response.json();
-    console.log(data);
     return data;
+}
+
+const getWeatherString = async () => {
+    const response = await fetch("http://192.168.0.132:5001/weatherstring");
+    return response.text();
 }
 
 // Labels einfügen, Daten einfügen
@@ -148,6 +164,12 @@ function setAltitude(data) {
     var altitudeLabel = document.getElementById("altitude-label");
 
     altitudeLabel.innerHTML = data[data.length - 1].altitude + " Meter";
+}
+
+function setWeatherData(weatherString) {
+    var weatherStringLabel = document.getElementById("weather-string");
+
+    weatherStringLabel.innerHTML = weatherString;
 }
 
 function getMinute(number) {

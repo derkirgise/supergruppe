@@ -59,6 +59,9 @@
             <h1>Wetterstation</h1>
         </div>
         <div class="main-column">
+            <div>
+                <h4 id="weather-string"></h4>
+            </div>
             <div id="temperature">
                 <h2>Temperatur</h2>
                 <div class="box">
@@ -97,6 +100,10 @@
         setDataToChart(data);
         setAltitude(data);
         // set data to charts
+   });
+
+   getWeatherString().then(weatherString => {
+        setWeatherData(weatherString);
    });
 
 </script>
