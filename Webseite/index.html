@@ -91,15 +91,10 @@
 
     let element_press=document.getElementById('pressureChart');
     createChart(element_press);
-
-    // element=document.getElementById('pressureChart');
-    // console.log(element)
-    // createChart(element);
     
    getData().then(data=>{
         setDataToChart(data);
         setAltitude(data);
-        // set data to charts
    });
 
    getWeatherString().then(weatherString => {
