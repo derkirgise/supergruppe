@@ -123,8 +123,6 @@ const getWeatherString = async () => {
     return response.text();
 }
 
-// Labels einfügen, Daten einfügen
-
 const setDataToChart = (data) => {
     let chartTemp = getChart("temperatureChart");
     let chartPress = getChart("pressureChart");
@@ -142,14 +140,7 @@ const setDataToChart = (data) => {
         chartPress.data.datasets[0].data.push(weatherdata.pressure);
         chartPress.update();
     }
-/*
-[{
-    temperature: number
-    pressure: number
-    altitude: number
-    datetime: date
-}]
-*/}
+}
 
 function parseDate(dateToParse) {
     var date = new Date(dateToParse);
